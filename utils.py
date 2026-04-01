@@ -68,13 +68,12 @@ def Linearkernel(x, y=None, c=None):
     """
     k(x, y) = x^T y + c
     """
-    # y가 주어지지 않으면 x를 사용
+
     y = x if y is None else y
     
-    # c가 주어지지 않으면 0으로 설정
     c = 0 if c is None else c
     
-    # einsum을 사용하여 x^T y를 계산
+    # Use einsum to compute x^T y
     k = torch.einsum('ji, ki -> jk', x, y) + c
     
     return k
