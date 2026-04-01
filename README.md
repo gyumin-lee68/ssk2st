@@ -26,7 +26,7 @@ The requirements.txt should include: torch, numpy, scipy, scikit-learn, matplotl
 Example command:
 
 ```sh
-python null.py
+python ssk2st/null.py
 ```
 Output: Null distribution histograms are saved in the figure/ directory.
 
