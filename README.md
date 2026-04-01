@@ -73,7 +73,7 @@ Example commands:
 ```sh
 python ssk2st/type1error_vs_joint_test.py
 python ssk2st/type1error_vs_joint_test_epsilon.py
-ssk2st/power_vs_joint_test.py
+python ssk2st/power_vs_joint_test.py
 python ssk2st/power_vs_joint_test_rho.py
 ```
 
