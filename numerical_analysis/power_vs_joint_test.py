@@ -75,10 +75,7 @@ MM2 = np.linspace(initial_sample_size_m2, m2, num_points, dtype=int)
 # Initialize the dictionaries to store the power results
 PowerDict = {method: np.zeros((num_trials, len(NN1))) for method in methods}
 PowerStdDevDict = {method: np.zeros(NN1.shape) for method in methods}
-# --- [수정 1] 시간 기록을 위한 딕셔너리 초기화 ---
-# [Trials, SamplePoints] 형태로 각 실행마다 걸린 시간을 저장
 TimeDict = {method: np.zeros((num_trials, len(NN1))) for method in methods}
-# 최종적으로 평균 시간을 저장할 딕셔너리
 AvgTimeDict = {} 
 # ---------------------------------------------
     
@@ -96,8 +93,8 @@ for i in tqdm(range(num_trials)):
         W_new = SourceW(m2i)
         W = np.vstack([Y[:, [-2, -1]], W_new[:, [-2, -1]]])
         
-        XV = np.hstack([X, V[:n1i]]) # X와 V를 합침
-        YW = np.hstack([Y, W[:n2i]]) # Y와 W를 합침
+        XV = np.hstack([X, V[:n1i]]) 
+        YW = np.hstack([Y, W[:n2i]]) 
 
 
         # Obtain the bandwidth of the kernel
@@ -115,7 +112,7 @@ for i in tqdm(range(num_trials)):
         # Run tests and record outcomes
         X, V, Y, W, XV, YW = torch.tensor(X), torch.tensor(V), torch.tensor(Y), torch.tensor(W), torch.tensor(XV), torch.tensor(YW)
         for method in methods:
-            # --- [수정 2] 각 메서드 별 실행 시간 측정 시작 ---
+          
             t_method_start = time.time()
             
             if method=='MMD-perm':
@@ -137,7 +134,6 @@ for i in tqdm(range(num_trials)):
                 stat = safe_crossSSMMD2sample(X,V,Y,W,kernel_func_marginal, "RandomForest")
                 th = thresh_normal(alpha)
             
-            # --- [수정 3] 실행 시간 측정 종료 및 기록 ---
             t_method_end = time.time()
             TimeDict[method][i][j] = t_method_end - t_method_start
             
@@ -158,18 +154,15 @@ pickle.dump(PowerDict, open(f'./PowerDict_{rho1}_{timestamp}.pkl', 'wb'))
 pickle.dump(PowerStdDevDict, open(f'./PowerStdDevDict_{rho1}_{timestamp}.pkl', 'wb'))
 
 
-# === [추가됨] 결과 요약 테이블 출력 ===
 print("\n" + "="*85)
 print(f"Power Summary (Alpha={alpha})")
 print("="*85)
 
-# 헤더 출력
-# 'Sample (n, m)' 칸은 22칸 확보, 각 메서드는 12칸씩 확보
 header = f"{'Sample (n, m)':<22}" + "".join([f"{m:>13}" for m in methods])
 print(header)
 print("-" * len(header))
 
-# 데이터 행 출력
+# printing the row
 for j in range(len(NN1)):
     n_val = NN1[j]
     m_val = MM1[j]
@@ -179,7 +172,7 @@ for j in range(len(NN1)):
     
     for method in methods:
         val = PowerDict[method][j]
-        row_str += f"{val:>13.3f}"  # 소수점 3자리까지 출력
+        row_str += f"{val:>13.3f}" 
     
     print(row_str)
 
@@ -208,7 +201,7 @@ for i, method in enumerate(methods):
 
 ax.set_title(f"Scenario 1 (Alt)", fontsize=14)
 ax.set_ylabel('Power', fontsize=12)
-ax.set_xlabel('Sample-Size n1', fontsize=12) # 수식 표현 사용
+ax.set_xlabel('Sample-Size n1', fontsize=12)
 
 ax.legend(loc='upper left', frameon=True, fancybox=False, edgecolor='black', fontsize=10)
 
