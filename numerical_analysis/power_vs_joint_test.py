@@ -177,37 +177,7 @@ for j in range(len(NN1)):
     print(row_str)
 
 print("="*85 + "\n")
-# ========================================
 
-
-fig, ax = plt.subplots(figsize=(6, 5))
-ax.grid(True)
-color_map = {
-    'MMD-perm': 'blue',
-    'xMMD': 'green',
-    'xssMMD(knn)': 'red',
-    'xssMMD(ker)': 'orange', # 또는 'darkorange'
-    'xssMMD(rf)': 'purple'
-}
-default_colors = sns.color_palette("deep")
-
-for i, method in enumerate(methods):
-    pm, ps = PowerDict[method], PowerStdDevDict[method]
-    
-    this_color = color_map.get(method, default_colors[i % len(default_colors)])
-    ax.plot(NN1, pm, label=method, color=this_color, linewidth=1.5)
-    ax.fill_between(NN1, pm - ps, pm + ps, color=this_color, alpha=0.2, edgecolor=None)
-
-
-ax.set_title(f"Scenario 1 (Alt)", fontsize=14)
-ax.set_ylabel('Power', fontsize=12)
-ax.set_xlabel('Sample-Size n1', fontsize=12)
-
-ax.legend(loc='upper left', frameon=True, fancybox=False, edgecolor='black', fontsize=10)
-
-plt.tight_layout()
-plt.savefig(f'./figure/PowerCurve_{rho1}_{timestamp}_styled.pdf')
-plt.show()
 
 end_time = time.time()
 print(f"Elapsed time: {end_time - start_time} seconds")
