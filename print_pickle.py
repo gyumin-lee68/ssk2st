@@ -3,10 +3,8 @@ import numpy as np
 import os
 import glob
 
-# ====================================================
 # 1. Setting 
 # This is an example and you may have to change it to be same as your experiment.
-# ====================================================
 n_fixed = 100        
 m_max = 2000         # maximum size of m
 num_points = 10      # number of the points of experiments
@@ -15,10 +13,8 @@ num_points = 10      # number of the points of experiments
 # m varies from 0 to 2000
 MM1 = np.linspace(0, m_max, num_points, dtype=int)
 
-# ====================================================
 # 2. Finding and opening the files
 # Define the file as file_path.
-# ====================================================
 
 try:
     with open(file_path, 'rb') as f:
@@ -29,9 +25,7 @@ except Exception as e:
 
 methods = list(results_dict.keys())
 
-# ====================================================
 # 3. Printing the table
-# ====================================================
 print("\n" + "="*85)
 print(f"Power Results Summary (Fixed n={n_fixed})")
 print(f"File: {os.path.basename(file_path)}")
