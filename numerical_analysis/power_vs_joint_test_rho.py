@@ -46,10 +46,10 @@ start_time = time.time()
 # Main loop for trials
 for i in tqdm(range(num_trials)):
     for j, rho in enumerate(rho_list):
-        # Alternative 세팅: X와 Y가 다름
+      
         meanX, meanY = np.zeros((d1,)), np.zeros((d1,))
         meanX[:num_pert] = eps
-        # rho에 따라 매번 공분산 행렬 생성
+        
         cov = np.eye(d1) + rho * (np.ones((d1, d1)) - np.eye(d1))
         
         X = GaussianVector(mean=meanX, cov=cov, n=n_fixed)
