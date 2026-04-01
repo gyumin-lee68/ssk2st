@@ -108,22 +108,4 @@ for method in methods:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 pickle.dump(PowerDict, open(f'./PowerDict_rho_{timestamp}.pkl', 'wb'))
 
-
-# Plotting
-fig, ax = plt.subplots(figsize=(6, 5))
-ax.grid(True)
-color_map = {'MMD-perm': 'blue', 'xMMD': 'green', 'xssMMD(knn)': 'red', 'xssMMD(ker)': 'orange', 'xssMMD(rf)': 'purple'}
-for method in methods:
-    pm, ps = PowerDict[method], PowerStdDevDict[method]
-    ax.plot(rho_list, pm, label=method, color=color_map[method], linewidth=1.5, marker='s')
-    ax.fill_between(rho_list, pm - ps, pm + ps, color=color_map[method], alpha=0.2)
-
-ax.set_title(r"Power under Alternative ($P_X \neq P_Y, P_V = P_W$)", fontsize=13)
-ax.set_ylabel('Power', fontsize=12)
-ax.set_xlabel(r'Correlation between Target and Auxiliary ($\rho$)', fontsize=12)
-ax.legend(loc='upper left', fontsize=10)
-plt.tight_layout()
-plt.savefig(f'./figure/Power_VaryingRho_{timestamp}_styled.pdf')
-plt.show()
-
 print(f"Elapsed time: {time.time() - start_time} seconds")
