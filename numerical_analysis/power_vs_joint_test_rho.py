@@ -57,7 +57,7 @@ for i in tqdm(range(num_trials)):
         X_new = GaussianVector(mean=meanX, cov=cov, n=m_fixed)
         Y_new = GaussianVector(mean=meanY, cov=cov, n=m_fixed)
         
-        # V와 W는 완전히 동일한 분포 (Shift 없음)
+        # V and W are independent
         V = np.vstack([X[:, [-2, -1]], X_new[:, [-2, -1]]])
         W = np.vstack([Y[:, [-2, -1]], Y_new[:, [-2, -1]]])
         
