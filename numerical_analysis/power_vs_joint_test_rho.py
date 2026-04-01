@@ -108,4 +108,17 @@ for method in methods:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 pickle.dump(PowerDict, open(f'./PowerDict_rho_{timestamp}.pkl', 'wb'))
 
+print("\n" + "="*85)
+print(f"Power Summary (Varying rho, Alpha={alpha})")
+print("="*85)
+header = f"{'rho':<15}" + "".join([f"{m:>13}" for m in methods])
+print(header)
+print("-" * len(header))
+for j, rho in enumerate(rho_list):
+    row_str = f"{rho:<15.2f}"
+    for method in methods:
+        row_str += f"{PowerDict[method][j]:>13.3f}"
+    print(row_str)
+print("="*85 + "\n")
+
 print(f"Elapsed time: {time.time() - start_time} seconds")
