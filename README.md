@@ -20,13 +20,13 @@ The requirements.txt should include: torch, numpy, scipy, scikit-learn, matplotl
 
 ### 2-1) Null Distribution Simulation
 
-* File: ssk2st/null.py
+* File: `ssk2st/numerical_analysis/null.py`
 * Purpose: Simulate the null distribution of xssMMD statistics under various scenarios.
 
 Example command:
 
 ```sh
-python ssk2st/null.py
+python ssk2st/numerical_analysis/null.py
 ```
 Output: Null distribution histograms are saved in the figure/ directory.
 
@@ -34,13 +34,13 @@ Output: Null distribution histograms are saved in the figure/ directory.
 
 ### 2-2) Power Analysis
 
-* File: power.py
+* File: `ssk2st/numerical_analysis/power.py`
 * Purpose: Simulate the statistical power of various kernel-based two-sample tests as a function of sample size ratio, dimension, and perturbation.
 
 Example command:
 
 ```sh
-python ssk2st/power.py
+python ssk2st/numerical_analysis/power.py
 ```
 Output: Power curves are saved in the figure/ directory.
 
@@ -48,13 +48,13 @@ Output: Power curves are saved in the figure/ directory.
 
 ### 2-3) Effect of Unlabeled Data Size
 
-* File: `ssk2st/power_unlabeled_fixed.py`
+* File: `ssk2st/numerical_analysis/power_unlabeled_fixed.py`
 * Purpose: Evaluate how the test power of xssMMD monotonically increases as the number of unlabeled samples grows, highlighting the effective utilization of auxiliary information.
 
 Example command:
 
 ```sh
-python ssk2st/power_unlabeled_fixed.py
+python ssk2st/numerical_analysis/power_unlabeled_fixed.py
 ```
 
 <br>
@@ -62,32 +62,32 @@ python ssk2st/power_unlabeled_fixed.py
 ### 2-4) Comparison with Joint Two-Sample Tests
 
 * Files: 
-  * `ssk2st/type1error_vs_joint_test.py` (Type-I error robustness under the null)
-  * `ssk2st/type1error_vs_joint_test_epsilon.py` (Varying nuisance shift magnitude `epsilon` under the null)
-  * `ssk2st/power_vs_joint_test.py` (Power comparison under the alternative)
-  * `ssk2st/power_vs_joint_test_rho.py` (Varying correlation strength `rho` under the alternative)
+  * `ssk2st/numerical_analysis/type1error_vs_joint_test.py` (Type-I error robustness under the null)
+  * `ssk2st/numerical_analysis/type1error_vs_joint_test_epsilon.py` (Varying nuisance shift magnitude `epsilon` under the null)
+  * `ssk2st/numerical_analysis/power_vs_joint_test.py` (Power comparison under the alternative)
+  * `ssk2st/numerical_analysis/power_vs_joint_test_rho.py` (Varying correlation strength `rho` under the alternative)
 * Purpose: Highlight the specific advantages of our semi-supervised test (xssMMD) over a standard two-sample test applied directly to the joint distributions. 
 
 Example commands:
 
 ```sh
-python ssk2st/type1error_vs_joint_test.py
-python ssk2st/type1error_vs_joint_test_epsilon.py
-python ssk2st/power_vs_joint_test.py
-python ssk2st/power_vs_joint_test_rho.py
+python ssk2st/numerical_analysis/type1error_vs_joint_test.py
+python ssk2st/numerical_analysis/type1error_vs_joint_test_epsilon.py
+python ssk2st/numerical_analysis/power_vs_joint_test.py
+python ssk2st/numerical_analysis/power_vs_joint_test_rho.py
 ```
 
 <br>
 
 ### 2-5) Running Time Comparison
 
-* File: `ssk2st/power_recording_time.py`
+* File: `ssk2st/numerical_analysis/power_recording_time.py`
 * Purpose: Compare the computational efficiency (running time) of xssMMD against baseline methods (MMD-perm and xMMD) across varying sample sizes to demonstrate its scalability.
 
 Example command:
 
 ```sh
-python ssk2st/power_recording_time.py
+python ssk2st/numerical_analysis/power_recording_time.py
 ```
 
 <br>
@@ -95,47 +95,43 @@ python ssk2st/power_recording_time.py
 ## 3. Real Data Experiments
 ###3-1) HTRU2 Pulsar Dataset Experiment
 
-* File: pulsar_test.py
+* File: `ssk2st/real_data_experiment/pulsar_test.py`
 * Purpose: Evaluate the performance of xssMMD tests on the HTRU2 pulsar/non-pulsar dataset.
 * Description: This experiment analyzes the ability of the SS-xMMD tests to distinguish between pulsar and non-pulsar signals using the HTRU2 dataset. The dataset contains various features extracted from the signals, and the experiment assesses the statistical significance of the differences between the two classes.
 
 Example command:
 
 ```sh
-python ssk2st/pulsar_test.py
+python ssk2st/real_data_experiment/pulsar_test.py
 ```
 
 <br>
 
 ###3-2) CUB-200-2011 Dataset Experiment
 
-* File: cub_test.py
+* File: `ssk2st/real_data_experiment/cub_test.py`
 * Purpose: Evaluate the performance of xssMMD tests on the CUB-200-2011 bird image/text dataset.
 * Description: This experiment generates image and text embeddings to assess the ability of xssMMD tests to distinguish between different bird groups based on their visual and textual features. The goal is to evaluate the statistical significance of the differences between the embeddings of various bird groups.
 
 Example command:
 
 ```sh
-python ssk2st/cub_test.py
+python ssk2st/real_data_experiment/cub_test.py
 ```
-
-Output: Experimental statistics and results are saved as .npy files in the results/ directory.
 
 <br>
 
 ###3-3) MNIST Dataset Experiment
 
-* File: mnist_test.py
+* File: `ssk2st/real_data_experiment/mnist_test.py`
 * Purpose: Evaluate the performance of xssMMD tests on the MNIST image dataset.
 * Description: This experiment uses image data of the numbers to assess the ability of xssMMD tests to distinguish between different groups of digits when Gaussian noise is added. The goal is to evaluate the statistical significance of the differences between the embeddings of various number groups.
 
 Example command:
 
 ```sh
-python ssk2st/mnist_test.py
+python ssk2st/real_data_experiment/mnist_test.py
 ```
-
-Output: Experimental statistics and results are saved as .npy files in the results/ directory.
 
 <br>
 
