@@ -108,37 +108,6 @@ for method in methods:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 pickle.dump(PowerDict, open(f'./PowerDict_rho_{timestamp}.pkl', 'wb'))
 
-# === 결과 요약 및 LaTeX 자동 생성 ===
-print("\n" + "="*85)
-print(f"Power Summary (Varying rho, Alpha={alpha})")
-print("="*85)
-header = f"{'rho':<15}" + "".join([f"{m:>13}" for m in methods])
-print(header)
-print("-" * len(header))
-for j, rho in enumerate(rho_list):
-    row_str = f"{rho:<15.2f}"
-    for method in methods:
-        row_str += f"{PowerDict[method][j]:>13.3f}"
-    print(row_str)
-print("="*85 + "\n")
-
-print("LaTeX Table Code for Overleaf:\n")
-print(r"\begin{table}[htbp]")
-print(r"\centering")
-print(r"\footnotesize")
-print(r"\setlength{\tabcolsep}{4pt}")
-print(r"\caption{Estimated power under the alternative ($P_X \neq P_Y, P_V = P_W$) across varying correlation strengths $\rho$ between target and auxiliary covariates.}")
-print(r"\label{tab:power_varying_rho}")
-print(r"\begin{tabular}{l" + "c" * len(rho_list) + "}")
-print(r"\toprule")
-print(r"Method \textbackslash \ $\rho$ & " + " & ".join([f"${r:.2f}$" for r in rho_list]) + r" \\")
-print(r"\midrule")
-for method in methods:
-    print(f"{method:15s} & " + " & ".join([f"{PowerDict[method][j]:.3f}" for j in range(len(rho_list))]) + r" \\")
-print(r"\bottomrule")
-print(r"\end{tabular}")
-print(r"\end{table}")
-print("\n" + "="*85 + "\n")
 
 # Plotting
 fig, ax = plt.subplots(figsize=(6, 5))
