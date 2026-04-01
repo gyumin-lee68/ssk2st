@@ -267,15 +267,15 @@ def fcheck(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, kerne
     # print(Y_base.shape)
     
     
-    # 첫 번째 항 계산: 1/n1 * sum(k(X_i, .)) for i in I_XV2
+    # Computing the first term: 1/n1 * sum(k(X_i, .)) for i in I_XV2
     sum_X = np.sum(kernel_func(X_base,X).cpu().numpy(), axis=0)
     term1 = (1 / n1) * sum_X
     # print(sum_X.shape)
-    # 두 번째 항 계산: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
+    # Computing the second term: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
     sum_Y = np.sum(kernel_func(Y_base,X).cpu().numpy(), axis=0)
     term2 = (1 / n2) * sum_Y
 
-    # 최종 결과
+    # Results
     result_1 = term1 - term2
     result_1 = torch.tensor(result_1)
     
@@ -321,7 +321,7 @@ def fcheck(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, kerne
     return result
 
 def fcheck_knn2(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, kernel='gaussian'):
-    # X, Y: 데이터 배열 (shape: (n_samples, n_features))
+    # shape of X, Y: (n_samples, n_features)
     n1,_ = X_base.shape
     n2,_ = Y_base.shape
     m1,_ = V_plus.shape
@@ -329,15 +329,15 @@ def fcheck_knn2(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, 
     # print(X_base.shape)
     # print(Y_base.shape)
     
-    # 첫 번째 항 계산: 1/n1 * sum(k(X_i, .)) for i in I_XV2
+    # Computing the first term: 1/n1 * sum(k(X_i, .)) for i in I_XV2
     sum_X = np.sum(kernel_func(X_base,X).cpu().numpy(), axis=0)
     term1 = (1 / n1) * sum_X
     # print(sum_X.shape)
-    # 두 번째 항 계산: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
+    # Computing the second term: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
     sum_Y = np.sum(kernel_func(Y_base,X).cpu().numpy(), axis=0)
     term2 = (1 / n2) * sum_Y
 
-    # 최종 결과
+    # Results
     result_1 = term1 - term2
     result_1 = torch.tensor(result_1)
     
@@ -351,62 +351,8 @@ def fcheck_knn2(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, 
     W_base_1 = W_base[:n2//2]
     W_base_2 = W_base[:n2//2]
     
-    # modelknnx1 = KNNKernelEstimator(k=3)
-    # modelknnx1.fit(V_base_2, X_base_2)
-    # # print(X_base_2.shape[0])
-    # # print(V_base_1.shape[0])
-    # # print(V_base_2.shape[0])
-    
-    # modelknnx2 = KNNKernelEstimator(k=3)
-    # modelknnx2.fit(V_base_1, X_base_1)
-    # modelknny1 = KNNKernelEstimator(k=3)
-    # modelknny1.fit(W_base_2, Y_base_2)
-    # modelknny2 = KNNKernelEstimator(k=3)
-    # modelknny2.fit(W_base_2, Y_base_2)
-    
-    # cond_kerx1 = modelknnx1.predict_function(V_base_1)
-    # cond_kerx2 = modelknnx2.predict_function(V_base_2)
-    # cond_kery1 = modelknny1.predict_function(W_base_1)
-    # cond_kery2 = modelknny2.predict_function(W_base_2)
-    
-    # knn_X_lab_1 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_kerx1]).cpu().numpy(), axis=0)
-    # knn_X_lab_2 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_kerx2]).cpu().numpy(), axis=0)
-    # knn_Y_lab_1 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_kery1]).cpu().numpy(), axis=0)
-    # knn_Y_lab_2 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_kery2]).cpu().numpy(), axis=0)
-
-    # term3 = (1/n1) * (knn_X_lab_1+knn_X_lab_2)
-    # term4 = (1/n2) * (knn_Y_lab_1+knn_Y_lab_2)
-    
-    # result_2 = term3 - term4
-    # result_2 = torch.tensor(result_2)
-    
-    # V_plus_1 = V_plus[:m1//2]
-    # V_plus_2 = V_plus[m1//2:]
-    # W_plus_1 = W_plus[:m2//2]
-    # W_plus_2 = W_plus[m2//2:]
-    # V_full_1 = torch.cat((V_plus_1,V_base_1),dim=0)
-    # V_full_2 = torch.cat((V_plus_2,V_base_2),dim=0)
-    # W_full_1 = torch.cat((W_plus_1,W_base_1),dim=0)
-    # W_full_2 = torch.cat((W_plus_2,W_base_2),dim=0)
-    
-    # cond_ker_full_x1 = modelknnx1.predict_function(V_full_1)
-    # cond_ker_full_x2 = modelknnx2.predict_function(V_full_2)
-    # cond_ker_full_y1 = modelknny1.predict_function(W_base_1)
-    # cond_ker_full_y2 = modelknny2.predict_function(W_full_1)
-    
-    # knn_X_full_1 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_ker_full_x1]).cpu().numpy(), axis=0)
-    # knn_X_full_2 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_ker_full_x2]).cpu().numpy(), axis=0)
-    # knn_Y_full_1 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_ker_full_y1]).cpu().numpy(), axis=0)
-    # knn_Y_full_2 = np.sum(torch.tensor([[kernel(x) for x in X] for kernel in cond_ker_full_y2]).cpu().numpy(), axis=0)
-    
-    # term5 = (1/(n1+m1)) * (knn_X_full_1+knn_X_full_2)
-    # term6 = (1/(n2+m2)) * (knn_Y_full_1+knn_Y_full_1)
-    # result_3 = term5 - term6
-    # result_3 = torch.tensor(result_3)
-    
-    # result = result_1 - result_2 + result_3
-    # return result
-    k = 3  # 원래 k값 유지
+   
+    k = 3 
     models = {
         'x1': KNNKernelEstimator(k=k).fit(V_base_2, X_base_2),
         'x2': KNNKernelEstimator(k=k).fit(V_base_1, X_base_1),
@@ -414,7 +360,6 @@ def fcheck_knn2(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, 
         'y2': KNNKernelEstimator(k=k).fit(W_base_2, Y_base_2)
     }
     
-    # 4. 조건부 커널 예측 (배치 처리)
     batch_size = 256
     
     def batch_predict_functions(model, data):
@@ -431,11 +376,10 @@ def fcheck_knn2(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, 
         'y2': batch_predict_functions(models['y2'], W_base_2)
     }
     
-    # 5. 커널 적용 (배치 처리)
+
     def apply_kernels(kernels, X):
         results = []
         for kernel_fn in kernels:
-            # kernel_fn은 estimated_kernel 함수
             batch_results = torch.tensor([kernel_fn(x.to(kernel_fn.__closure__[0].cell_contents.device)) for x in X])
             results.append(batch_results)
         return torch.stack(results).sum(dim=0)
@@ -450,7 +394,7 @@ def fcheck_knn2(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, 
     result_2 = (1/n1) * (knn_results['X1'] + knn_results['X2']) - \
                (1/n2) * (knn_results['Y1'] + knn_results['Y2'])
     
-    # 6. 전체 데이터에 대한 예측
+    # Prediction
     V_full_1 = torch.cat((V_plus[:m1//2], V_base_1))
     V_full_2 = torch.cat((V_plus[m1//2:], V_base_2))
     W_full_1 = torch.cat((W_plus[:m2//2], W_base_1))
@@ -474,29 +418,27 @@ def fcheck_knn2(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, 
     result_3 = (1/(n1+m1)) * (full_results['X1'] + full_results['X2']) - \
                (1/(n2+m2)) * (full_results['Y1'] + full_results['Y2'])
     
-    # 중간 결과를 즉시 삭제하여 메모리 확보
     del models['x1']
     del models['x2']
-    torch.cuda.empty_cache()  # GPU 메모리 정리
+    torch.cuda.empty_cache() 
     
     return result_1 - result_2 + result_3
 
 def fcheck_knn(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, kernel='gaussian'):
     
-    # 기본 계산 (변경 없음)
     n1, _ = X_base.shape
     n2, _ = Y_base.shape
     m1, _ = V_plus.shape
     m2, _ = W_plus.shape
     
-    # 첫 번째 항 계산: 1/n1 * sum(k(X_i, .)) for i in I_XV2
+    # Computing the first term: 1/n1 * sum(k(X_i, .)) for i in I_XV2
     sum_X = np.sum(kernel_func(X_base,X).cpu().numpy(), axis=0)
     term1 = (1 / n1) * sum_X
-    # 두 번째 항 계산: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
+    # Computing the second term: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
     sum_Y = np.sum(kernel_func(Y_base,X).cpu().numpy(), axis=0)
     term2 = (1 / n2) * sum_Y
 
-    # 최종 결과
+    # Results
     result_1 = term1 - term2
     result_1 = torch.tensor(result_1)
     
@@ -510,7 +452,7 @@ def fcheck_knn(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, k
     W_base_1 = W_base[:n2//2]
     W_base_2 = W_base[:n2//2]
     
-    k = 3  # k값 설정
+    k = 3 
     models = {
         'x1': KNNKernelEstimator(k=k).fit(V_base_2, X_base_2),
         'x2': KNNKernelEstimator(k=k).fit(V_base_1, X_base_1),
@@ -518,7 +460,7 @@ def fcheck_knn(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, k
         'y2': KNNKernelEstimator(k=k).fit(W_base_2, Y_base_2)
     }
     
-    # 배치 처리
+
     batch_size = 512
     
     def batch_predict_functions(model, data):
@@ -538,7 +480,6 @@ def fcheck_knn(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, k
     def apply_kernels(kernels, X):
         results = []
         for kernel_fn in kernels:
-            # kernel_fn은 estimated_kernel 함수
             batch_results = torch.stack([kernel_fn(x.to(kernel_fn.__closure__[0].cell_contents.device)) for x in X])
             results.append(batch_results)
         return torch.stack(results).sum(dim=0)
@@ -553,7 +494,7 @@ def fcheck_knn(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, k
     result_2 = (1/n1) * (knn_results['X1'] + knn_results['X2']) - \
                (1/n2) * (knn_results['Y1'] + knn_results['Y2'])
     
-    # 전체 데이터에 대한 예측
+    # Prediction
     V_full_1 = torch.cat((V_plus[:m1//2], V_base_1))
     V_full_2 = torch.cat((V_plus[m1//2:], V_base_2))
     W_full_1 = torch.cat((W_plus[:m2//2], W_base_1))
@@ -617,24 +558,22 @@ def montecarlo(X, V, X_train, V_train, kernel, num_samples=10000):
     return torch.stack(cme_estimates).to(device)  # Shape: [len(V), len(X)]
 
 def fcheck_mc(X, X_base, Y_base, V_base, V_plus, W_base, W_plus, kernel_func, kernel='gaussian'):
-    # X, Y: 데이터 배열 (shape: (n_samples, n_features))
+    # shape of X, Y: (n_samples, n_features)
     n1,_ = X_base.shape
     n2,_ = Y_base.shape
     m1,_ = V_plus.shape
     m2,_ = W_plus.shape
-    # print(X_base.shape)
-    # print(Y_base.shape)
     
     
-    # 첫 번째 항 계산: 1/n1 * sum(k(X_i, .)) for i in I_XV2
+    # Computing the first term: 1/n1 * sum(k(X_i, .)) for i in I_XV2
     sum_X = np.sum(kernel_func(X_base,X).cpu().numpy(), axis=0)
     term1 = (1 / n1) * sum_X
-    # print(sum_X.shape)
-    # 두 번째 항 계산: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
+    
+    # Computing the second term: 1/n2 * sum(k(Y_i, .)) for i in I_YW2
     sum_Y = np.sum(kernel_func(Y_base,X).cpu().numpy(), axis=0)
     term2 = (1 / n2) * sum_Y
 
-    # 최종 결과
+    # Results
     result_1 = term1 - term2
     result_1 = torch.tensor(result_1)
     
