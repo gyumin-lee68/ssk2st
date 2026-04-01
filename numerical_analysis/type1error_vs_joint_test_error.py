@@ -129,40 +129,4 @@ for j, eps_V in enumerate(eps_V_list):
     print(row_str)
 print("="*85 + "\n")
 
-print("LaTeX Table Code for Overleaf:\n")
-print(r"\begin{table}[htbp]")
-print(r"\centering")
-print(r"\footnotesize")
-print(r"\setlength{\tabcolsep}{4pt}")
-print(r"\caption{Type-I error rate of the joint and marginal tests under the null ($P_X=P_Y, P_V \neq P_W$) with varying nuisance shift magnitude $\epsilon_V$.}")
-print(r"\label{tab:type1_varying_eps}")
-print(r"\begin{tabular}{l" + "c" * len(eps_V_list) + "}")
-print(r"\toprule")
-print(r"Method \textbackslash \ $\epsilon_V$ & " + " & ".join([f"${e:.1f}$" for e in eps_V_list]) + r" \\")
-print(r"\midrule")
-for method in methods:
-    print(f"{method:15s} & " + " & ".join([f"{TypeIErrorDict[method][j]:.3f}" for j in range(len(eps_V_list))]) + r" \\")
-print(r"\bottomrule")
-print(r"\end{tabular}")
-print(r"\end{table}")
-print("\n" + "="*85 + "\n")
-
-# Plotting
-fig, ax = plt.subplots(figsize=(6, 5))
-ax.grid(True)
-color_map = {'MMD-perm': 'blue', 'xMMD': 'green', 'xssMMD(knn)': 'red', 'xssMMD(ker)': 'orange', 'xssMMD(rf)': 'purple'}
-for method in methods:
-    pm, ps = TypeIErrorDict[method], TypeIErrorStdDict[method]
-    ax.plot(eps_V_list, pm, label=method, color=color_map[method], linewidth=1.5, marker='o')
-    ax.fill_between(eps_V_list, pm - ps, pm + ps, color=color_map[method], alpha=0.2)
-
-ax.axhline(y=0.05, color='black', linestyle='--', label='Nominal Level (0.05)')
-ax.set_title(r"Type-I Error under Joint Null ($P_X=P_Y, P_V \neq P_W$)", fontsize=13)
-ax.set_ylabel('Type-I Error Rate', fontsize=12)
-ax.set_xlabel(r'Nuisance Shift Magnitude ($\epsilon_V$)', fontsize=12)
-ax.legend(loc='upper left', fontsize=10)
-plt.tight_layout()
-plt.savefig(f'./figure/TypeIError_VaryingEpsV_{timestamp}_styled.pdf')
-plt.show()
-
 print(f"Elapsed time: {time.time() - start_time} seconds")
