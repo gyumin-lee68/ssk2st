@@ -29,7 +29,7 @@ num_perms = 200
 num_trials = 1000  
 kernel_type = RBFkernel 
 
-# --- 우리가 변화시킬 Correlation 리스트 ---
+# List of Correlations ---
 rho_list = [0.0, 0.2, 0.4, 0.6, 0.8, 0.95]
 
 thresh_permutation = partial(get_bootstrap_threshold, num_perms=num_perms)
