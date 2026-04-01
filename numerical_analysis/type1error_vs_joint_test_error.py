@@ -23,7 +23,6 @@ rho = 0.95
 eps = 0.3  # Magnitude of perturbation for X and Y (Null)
 num_pert = 1  
 
-# 고정된 샘플 사이즈 설정
 n_fixed, m_fixed = 100, 1000 
 alpha = 0.05  
 num_bootstrap = 200  
@@ -31,7 +30,7 @@ num_perms = 200
 num_trials = 1000  
 kernel_type = RBFkernel 
 
-# --- 우리가 변화시킬 Nuisance Shift 리스트 ---
+# Different Nuisance Shifts ---
 eps_V_list = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
 
 # Function handles for threshold computing methods
@@ -64,7 +63,7 @@ for i in tqdm(range(num_trials)):
         X_new = GaussianVector(mean=meanX, cov=cov, n=m_fixed)
         Y_new = GaussianVector(mean=meanY, cov=cov, n=m_fixed)
         
-        # V에만 eps_V 만큼의 노이즈 추가
+      
         V = np.vstack([X[:, :2], X_new[:, :2]])
         V[:, 0] += eps_V 
         W = np.vstack([Y[:, [-2, -1]], Y_new[:, [-2, -1]]])
@@ -72,7 +71,7 @@ for i in tqdm(range(num_trials)):
         XV = np.hstack([X, V[:n_fixed]]) 
         YW = np.hstack([Y, W[:n_fixed]])
 
-        # Obtain the bandwidth of the kernel (버그 수정됨)
+        # Obtain the bandwidth of the kernel 
         bw_marginal = get_median_bw(X, Y) 
         bw_joint = get_median_bw(XV, YW)
         kernel_func_joint = partial(RBFkernel1, bw=bw_joint) if kernel_type == RBFkernel else partial(Linearkernel)
@@ -117,7 +116,6 @@ for method in methods:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 pickle.dump(TypeIErrorDict, open(f'./TypeIErrorDict_epsV_{timestamp}.pkl', 'wb'))
 
-# === 결과 요약 및 LaTeX 자동 생성 ===
 print("\n" + "="*85)
 print(f"Type-I Error Rate Summary (Varying eps_V, Alpha={alpha})")
 print("="*85)
