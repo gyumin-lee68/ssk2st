@@ -181,22 +181,3 @@ plt.show()
 
 end_time = time.time()
 print(f"Elapsed time: {end_time - start_time} seconds")
-
-# # Plot results
-# fig, ax = plt.subplots(facecolor='white')
-# for method in methods:
-#     pm, ps = PowerDict[method], PowerStdDevDict[method]
-#     # --- CHANGED: Plot against MM1 (Unlabeled size) ---
-#     ax.plot(MM1, pm, label=method)
-#     ax.fill_between(MM1, pm - ps, pm + ps, alpha=0.15)
-#     # --------------------------------------------------
-
-# ax.set_title(f"Power vs Unlabeled Sample-Size (Fixed n={n_fixed})")
-# ax.set_ylabel('Power')
-# ax.set_xlabel('Unlabeled Sample-Size m1 = m2') # Changed label
-# ax.legend()
-# plt.savefig(f'./figure/PowerCurve_{kernel_type.__name__}_{timestamp}.pdf')
-# plt.show()
-
-# end_time = time.time()
-# print(f"Elapsed time: {end_time - start_time} seconds")
