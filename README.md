@@ -46,6 +46,52 @@ Output: Power curves are saved in the figure/ directory.
 
 <br>
 
+### 2-3) Effect of Unlabeled Data Size
+
+* File: `ssk2st/power_unlabeled_fixed.py`
+* Purpose: Evaluate how the test power of xssMMD monotonically increases as the number of unlabeled samples grows, highlighting the effective utilization of auxiliary information.
+
+Example command:
+
+```sh
+python ssk2st/power_unlabeled_fixed.py
+```
+
+<br>
+
+### 2-4) Comparison with Joint Two-Sample Tests
+
+* Files: 
+  * `ssk2st/type1error_vs_joint_test.py` (Type-I error robustness under the null)
+  * `ssk2st/type1error_vs_joint_test_epsilon.py` (Varying nuisance shift magnitude `epsilon` under the null)
+  * `ssk2st/power_vs_joint_test.py` (Power comparison under the alternative)
+  * `ssk2st/power_vs_joint_test_rho.py` (Varying correlation strength `rho` under the alternative)
+* Purpose: Highlight the specific advantages of our semi-supervised test (xssMMD) over a standard two-sample test applied directly to the joint distributions. 
+
+Example commands:
+
+```sh
+python ssk2st/type1error_vs_joint_test.py
+python ssk2st/type1error_vs_joint_test_epsilon.py
+ssk2st/power_vs_joint_test.py
+python ssk2st/power_vs_joint_test_rho.py
+```
+
+<br>
+
+### 2-5) Running Time Comparison
+
+* File: `ssk2st/power_recording_time.py`
+* Purpose: Compare the computational efficiency (running time) of xssMMD against baseline methods (MMD-perm and xMMD) across varying sample sizes to demonstrate its scalability.
+
+Example command:
+
+```sh
+python ssk2st/power_recording_time.py
+```
+
+<br>
+
 ## 3. Real Data Experiments
 ###3-1) HTRU2 Pulsar Dataset Experiment
 
@@ -93,14 +139,29 @@ Output: Experimental statistics and results are saved as .npy files in the resul
 
 <br>
 
-## 4. Notes for Reproducibility
+## 4. Utility Scripts
+
+### 4-1) Result Inspector 
+
+* File: `ssk2st/print_pickle.py`
+* Purpose: A helper script to load and inspect the saved `.pkl` files generated from the experiments.
+
+Example command:
+
+```sh
+python ssk2st/print_pickle.py
+```
+
+<br>
+
+## 5. Notes for Reproducibility
 * You can modify key parameters (sample size, dimension, number of repetitions, etc.) at the top of each script.
 * All results (figures, .npy, .pkl files, etc.) are automatically saved in subdirectories.
 * The CUB-200-2011 datasets must be downloaded separately using the link provided below, and the corresponding paths in your local should be set in the scripts.
 
 <br>
 
-## 5. Acknowledgement
+## 6. Acknowledgement
 We appreciate the following repositories and datasets for their valuable code base and data:
 * https://github.com/sshekhar17/PermFreeMMD
 * https://github.com/ilmunk/ss-ustat
