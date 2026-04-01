@@ -77,10 +77,7 @@ MM2 = np.linspace(initial_sample_size_m2, m2, num_points, dtype=int)
 # Initialize the dictionaries to store the power results
 PowerDict = {method: np.zeros((num_trials, len(NN1))) for method in methods}
 PowerStdDevDict = {method: np.zeros(NN1.shape) for method in methods}
-# --- [수정 1] 시간 기록을 위한 딕셔너리 초기화 ---
-# [Trials, SamplePoints] 형태로 각 실행마다 걸린 시간을 저장
 TimeDict = {method: np.zeros((num_trials, len(NN1))) for method in methods}
-# 최종적으로 평균 시간을 저장할 딕셔너리
 AvgTimeDict = {} 
 # ---------------------------------------------
     
@@ -113,7 +110,7 @@ for i in tqdm(range(num_trials)):
         # Run tests and record outcomes
         X, V, Y, W = torch.tensor(X), torch.tensor(V), torch.tensor(Y), torch.tensor(W)
         for method in methods:
-            # --- [수정 2] 각 메서드 별 실행 시간 측정 시작 ---
+        
             t_method_start = time.time()
             
             if method=='MMD-perm':
@@ -135,7 +132,6 @@ for i in tqdm(range(num_trials)):
                 stat = safe_crossSSMMD2sample(X,V,Y,W,kernel_func, "RandomForest")
                 th = thresh_normal(alpha)
             
-            # --- [수정 3] 실행 시간 측정 종료 및 기록 ---
             t_method_end = time.time()
             TimeDict[method][i][j] = t_method_end - t_method_start
             
@@ -148,17 +144,10 @@ for method in methods:
         for i in range(len(NN1))
     ])
     PowerDict[method] = PowerDict[method].mean(axis=0)
-    
-    # --- [수정 4] 평균 실행 시간 계산 ---
-    # (Trial들에 대한 평균을 구하여 Sample Size별 평균 시간을 얻음)
     AvgTimeDict[method] = TimeDict[method].mean(axis=0)
 
 # Save results to pickle files
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-# pickle.dump(PowerDict, open(f'./PowerDict_{rho1}_{b}_{timestamp}.pkl', 'wb'))
-# pickle.dump(PowerStdDevDict, open(f'./PowerStdDevDict_{rho1}_{b}_{timestamp}.pkl', 'wb'))
-
-# --- [수정 5] 시간 기록 저장 ---
 pickle.dump(AvgTimeDict, open(f'./TimeDict_{rho1}_{b}_{timestamp}.pkl', 'wb'))
 print("\n" + "="*50)
 print(f"Experiment Completed. Results Saved with timestamp: {timestamp}")
@@ -166,23 +155,17 @@ print(f"Dimension selection b: {b}")
 print("="*50)
 print("Average Execution Time per Method (over all sample sizes):")
 for method in methods:
-    # 전체 샘플 사이즈에 대한 평균의 평균을 출력하여 대략적인 속도 비교
     overall_avg_time = np.mean(AvgTimeDict[method])
     print(f"  - {method:12s}: {overall_avg_time:.5f} sec/test")
 print("="*50 + "\n")
-
-# === [수정됨] 상세 시간 출력 부분 ===
 print("\n" + "="*80)
 print(f"Detailed Average Execution Time per Sample Size (Seconds)")
 print("="*80)
 
-# 헤더 출력 (메서드 이름들)
-# n, m 사이즈를 표시할 공간(20칸) + 각 메서드별 공간(12칸씩)
 header = f"{'Sample (n, m)':<20}" + "".join([f"{m:>13}" for m in methods])
 print(header)
 print("-" * len(header))
 
-# 각 Sample Size 별로 행 출력
 for j in range(len(NN1)):
     n_val = NN1[j]
     m_val = MM1[j]
@@ -191,7 +174,6 @@ for j in range(len(NN1)):
     row_str = f"{row_label:<20}"
     
     for method in methods:
-        # AvgTimeDict[method]는 길이가 num_points인 배열입니다. j번째 값을 가져옵니다.
         time_val = AvgTimeDict[method][j]
         row_str += f"{time_val:>13.5f}"
     
